@@ -1,0 +1,42 @@
+pipeline {
+    agent {
+        docker {
+            image 'luckycometdaft/emcigccarm:v5'
+            args '--user root --network="host"'
+        }
+    }
+    stages {
+        stage('Build') {
+            steps {
+                echo "Exercise: ASM.DMV.01"
+                /*
+                echo "Number: ${BUILD_NUMBER}"
+                echo "Build url: ${BUILD_URL}"
+                echo "Branch: ${GIT_BRANCH}"
+                echo "Git url: ${GIT_URL}"
+                echo "Git commit: ${GIT_COMMIT}"
+                echo "Workspace: ${WORKSPACE}"
+                echo "Jenkin url: ${JENKINS_URL}"
+                */
+
+				sh 'make'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+				sh 'mkdir -p outTest'
+				sh 'renode-test -d outTest Testing.robot'
+            }
+        }
+    }
+
+    post {
+        always {
+			sh 'ls -l'
+			robot outputPath: '.', outputFileName: 'robot_output.xml'
+			archiveArtifacts artifacts: 'robot_output.xml', fingerprint: false
+            sh 'python3 sendSync.py ${BUILD_NUMBER} ${GIT_BRANCH} ${GIT_COMMIT} ${WORKSPACE}'
+        }
+    }
+}
