@@ -76,4 +76,5 @@ TC04: Check String Spaces And Uppercase
     ${str2}                  String Conver          ${read_to_ram}
     ${str1}                  Create_List_String     ${STR_CMP_4}
     Lists Should Be Equal    ${str2}                ${str1}
+    
     [Teardown]               Quit Machine
