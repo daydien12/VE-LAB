@@ -8,21 +8,21 @@ ${FIRMWARE}    @${CURDIR}/main.elf
 
 
 ${LENGTH_RUN_1}         30
-${STR_CMP_1}            H
-${STR_LOAD_TO_RAM_1}    'h'
+${STR_CMP_1}            h
+${STR_LOAD_TO_RAM_1}    'H'
 
 ${LENGTH_RUN_2}         300
-${STR_CMP_2}            XINCHAOBANNHETOILABIEN
-${STR_LOAD_TO_RAM_2}    'xinchaobannhetoilabien'
+${STR_CMP_2}            xinchaobannhetoilabien
+${STR_LOAD_TO_RAM_2}    'XINCHAOBANNHETOILABIEN'
 
 ${LENGTH_RUN_3}         500
-${STR_CMP_3}            HOC VIEN CONG NGHE BUU CHINH VIEN THONG
-${STR_LOAD_TO_RAM_3}    'hoc vien cong nghe buu chinh vien thong'
+${STR_CMP_3}            hoc vien cong nghe buu chinh vien thong
+${STR_LOAD_TO_RAM_3}    'HOC VIEN CONG NGHE BUU CHINH VIEN THONG'
 
 
 ${LENGTH_RUN_4}         500
-${STR_CMP_4}            HOC VIEN CONG NGHE BUU CHINH VIEN THONG
-${STR_LOAD_TO_RAM_4}    'hoc vIen CONG nghe buu ChInH vien tHOng'
+${STR_CMP_4}            hoc vien cong nghe buu chinh vien thong
+${STR_LOAD_TO_RAM_4}    'HoC vIeN CONG NgHE BUU CHinH VIEN ThonG'
 
 *** Test Cases ***
 TC01: Simple String Check One Byte
@@ -76,5 +76,4 @@ TC04: Check String Spaces And Uppercase
     ${str2}                  String Conver          ${read_to_ram}
     ${str1}                  Create_List_String     ${STR_CMP_4}
     Lists Should Be Equal    ${str2}                ${str1}
-    
     [Teardown]               Quit Machine

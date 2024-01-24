@@ -1,0 +1,6 @@
+15:25:03.6725 [INFO] System bus created.
+15:25:05.0060 [INFO] Reading cache
+15:25:05.3206 [INFO] sysbus: Loaded SVD: /tmp/renode-5995/3b44d7cf-d44e-43c8-98b9-5e4be5599486.tmp. Name: STM32F103. Description: STM32F103.
+15:25:05.3753 [INFO] sysbus: Loading segment of 280 bytes length at 0x8000000.
+15:25:05.4039 [INFO] sysbus: Loading segment of 0 bytes length at 0x8000118.
+15:25:05.9463 [INFO] machine-0: Disposed.

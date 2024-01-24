@@ -1,0 +1,146 @@
+
+main.elf:     file format elf32-littlearm
+main.elf
+architecture: armv7, flags 0x00000112:
+EXEC_P, HAS_SYMS, D_PAGED
+start address 0x08000000
+
+Program Header:
+    LOAD off    0x00010000 vaddr 0x08000000 paddr 0x08000000 align 2**16
+         filesz 0x00000130 memsz 0x00000130 flags r-x
+    LOAD off    0x00020000 vaddr 0x20000000 paddr 0x08000130 align 2**16
+         filesz 0x00000000 memsz 0x00000000 flags rw-
+private flags = 0x5000200: [Version5 EABI] [soft-float ABI]
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000130  08000000  08000000  00010000  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .preinit_array 00000000  08000130  08000130  00020000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .init_array   00000000  08000130  08000130  00020000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .fini_array   00000000  08000130  08000130  00020000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  4 .data         00000000  20000000  08000130  00020000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  5 .bss          00000000  20000000  08000130  00020000  2**0
+                  ALLOC
+  6 .ARM.attributes 00000021  00000000  00000000  00020000  2**0
+                  CONTENTS, READONLY
+  7 .debug_line   0000004c  00000000  00000000  00020021  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  8 .debug_info   00000026  00000000  00000000  0002006d  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  9 .debug_abbrev 00000014  00000000  00000000  00020093  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 10 .debug_aranges 00000020  00000000  00000000  000200a8  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 11 .debug_str    00000032  00000000  00000000  000200c8  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+SYMBOL TABLE:
+08000000 l    d  .text	00000000 .text
+08000130 l    d  .preinit_array	00000000 .preinit_array
+08000130 l    d  .init_array	00000000 .init_array
+08000130 l    d  .fini_array	00000000 .fini_array
+20000000 l    d  .data	00000000 .data
+20000000 l    d  .bss	00000000 .bss
+00000000 l    d  .ARM.attributes	00000000 .ARM.attributes
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_aranges	00000000 .debug_aranges
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 l    df *ABS*	00000000 main.o
+080000ec l       .text	00000000 main
+080000f0 l       .text	00000000 loop
+08000126 l       .text	00000000 exit
+08000118 l       .text	00000000 skip
+00000000         *UND*	00000000 reset_handler
+08000130 g       .fini_array	00000000 __exidx_end
+08000130 g       .data	00000000 _etext
+08000130 g       .fini_array	00000000 __fini_array_end
+08000130 g       .fini_array	00000000 __exidx_start
+20000000 g       .bss	00000000 _ebss
+00000000         *UND*	00000000 vector_table
+08000130 g       *ABS*	00000000 _data_loadaddr
+20000000 g       .bss	00000000 end
+08000130 g       .fini_array	00000000 __fini_array_start
+08000130 g       .init_array	00000000 __init_array_end
+08000130 g       .preinit_array	00000000 __preinit_array_end
+20000000 g       .data	00000000 _data
+20000000 g       .data	00000000 _edata
+08000130 g       .init_array	00000000 __init_array_start
+08000130 g       .preinit_array	00000000 __preinit_array_start
+
+
+
+Disassembly of section .text:
+
+08000000 <main-0xec>:
+ 8000000:	20000400 	andcs	r0, r0, r0, lsl #8
+ 8000004:	080000ed 	stmdaeq	r0, {r0, r2, r3, r5, r6, r7}
+	...
+
+080000ec <main>:
+    .word 0x20000400
+    .word 0x080000ed
+    .space 0xe4
+
+main:
+    ldr r0, =0x20000010 @load in the string
+ 80000ec:	480e      	ldr	r0, [pc, #56]	; (8000128 <exit+0x2>)
+    ldr r1, =0x20000100 @load in the string
+ 80000ee:	490f      	ldr	r1, [pc, #60]	; (800012c <exit+0x6>)
+
+080000f0 <loop>:
+loop:
+    ldrb r9, [r0]
+ 80000f0:	f890 9000 	ldrb.w	r9, [r0]
+    cmp r9, #0 @check for the null character
+ 80000f4:	f1b9 0f00 	cmp.w	r9, #0
+    beq exit
+ 80000f8:	d015      	beq.n	8000126 <exit>
+
+    cmp r9, #32
+ 80000fa:	f1b9 0f20 	cmp.w	r9, #32
+    beq skip
+ 80000fe:	d00b      	beq.n	8000118 <skip>
+
+    cmp r9, #96
+ 8000100:	f1b9 0f60 	cmp.w	r9, #96	; 0x60
+    bgt skip
+ 8000104:	dc08      	bgt.n	8000118 <skip>
+
+    add r9, #32
+ 8000106:	f109 0920 	add.w	r9, r9, #32
+    strb r9, [r1]
+ 800010a:	f881 9000 	strb.w	r9, [r1]
+    add r0, r0, #1
+ 800010e:	f100 0001 	add.w	r0, r0, #1
+    add r1, r1, #1
+ 8000112:	f101 0101 	add.w	r1, r1, #1
+    b loop
+ 8000116:	e7eb      	b.n	80000f0 <loop>
+
+08000118 <skip>:
+
+skip:
+    strb r9, [r1]
+ 8000118:	f881 9000 	strb.w	r9, [r1]
+    add r0, r0, #1
+ 800011c:	f100 0001 	add.w	r0, r0, #1
+    add r1, r1, #1
+ 8000120:	f101 0101 	add.w	r1, r1, #1
+    b loop
+ 8000124:	e7e4      	b.n	80000f0 <loop>
+
+08000126 <exit>:
+
+exit:
+    b .
+ 8000126:	e7fe      	b.n	8000126 <exit>
+    ldr r0, =0x20000010 @load in the string
+ 8000128:	20000010 	.word	0x20000010
+    ldr r1, =0x20000100 @load in the string
+ 800012c:	20000100 	.word	0x20000100
